@@ -18,6 +18,7 @@ namespace MarkovTextGenerator
             {
                 if (content[i].Length > 51)
                 {
+                    //delete unnecessary info
                     content[i] = content[i].Substring(24, content[i].Length - 30);
                     string regex = "(\\[.*\\])";
                     content[i] = Regex.Replace(content[i], regex, "");

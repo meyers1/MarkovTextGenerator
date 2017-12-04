@@ -68,11 +68,18 @@ namespace MarkovTextGenerator
             }
             else
             {
+                bool inDictionary = false;
+
                 foreach (Word s in words[word])
                 {
                     if (s.ToString() == word2)
                     {
                         s.Count++;
+                        inDictionary = true;
+                    }
+                    if (!inDictionary)
+                    {
+                        words[word].Add(new Word(word2));
                     }
                 }
             }
@@ -83,7 +90,7 @@ namespace MarkovTextGenerator
         {
             if (words.ContainsKey(word))
             {
-                double choice = rand.Next(1);
+                double choice = rand.NextDouble();
                 double num = 0;
                 foreach (Word s in words[word])
                 {

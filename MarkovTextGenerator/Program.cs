@@ -29,8 +29,9 @@ namespace MarkovTextGenerator
             //    chain.AddString(line);  // Let the chain process this string
             //}
 
-            //string input = System.IO.File.ReadAllText(@"C:\TrumpTweets.txt");
-            string input = File.ReadAllText(@"C:\Users\SUNNY\Documents\GitHub\MarkovTextGenerator\TrumpTweets.txt");
+            string input = File.ReadAllText(@"C:\Users\eahscs\Documents\GitHub\MarkovTextGenerator\Test.txt");
+            //string input = File.ReadAllText(@"C:\Users\eahscs\Documents\GitHub\MarkovTextGenerator\TrumpTweets.txt");
+            //string input = File.ReadAllText(@"C:\Users\SUNNY\Documents\GitHub\MarkovTextGenerator\TrumpTweets.txt");
 
             string[] FormattedInput = Format.Tweets(input);
 
