@@ -14,12 +14,12 @@ namespace MarkovTextGenerator
         public Chain ()
         {
             words = new Dictionary<String, List<Word>>();
-            rand = new Random(System.Environment.TickCount);
+            rand = new Random();
         }
 
         // This may not be the best approach.. better may be to actually store
         // a separate list of actual sentence starting words and randomly choose from that
-        public String GetRandomStartingWord ()
+        public String GetRandomStartingWord()
         {
             return words.Keys.ElementAt(rand.Next() % words.Keys.Count);
         }
@@ -34,8 +34,26 @@ namespace MarkovTextGenerator
         //  AddPair("on", "fire")
         //  AddPair("fire", "")
 
-        public void AddString (String sentence)
+        public void AddString(String sentence)
         {
+            string[] words = sentence.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string word1 = "", word2 = "";
+            for (int i = 0; i < words.Length - 1; i++)
+            {
+                word1 = words[i];
+                word2 = words[i + 1];
+                //if (words[i + 1] == null)
+                //{
+                //    word2 = "";
+                //}
+                //else
+                //{
+                //    word2 = words[i + 1];
+                //}
+                AddPair(word1, word2);
+            }
+            word1 = word2;
+            word2 = "";
             // TODO: Break sentence up into word pairs
             // TODO: Add each word pair to the chain
         }
@@ -61,19 +79,25 @@ namespace MarkovTextGenerator
         }
 
         // Given a word, randomly chooses the next word
-        public String GetNextWord (String word)
+        public String GetNextWord(String word)
         {
             if (words.ContainsKey(word))
             {
-                double choice = 1.0 / (double)rand.Next(100000);
-
-                Console.WriteLine("I picked the number " + choice); 
+                double choice = rand.Next(1);
+                double num = 0;
+                foreach (Word s in words[word])
+                {
+                    num += s.Probability;
+                    if (choice < num)
+                    {
+                        return s.ToString();
+                    }
+                }
             }
-
-            return "idkbbq";
+            return "";  
         }
 
-        public void UpdateProbabilities ()
+        public void UpdateProbabilities()
         {
             foreach (String word in words.Keys)
             {
@@ -82,15 +106,14 @@ namespace MarkovTextGenerator
                 // Step 1:  Get the sum of all occurences of each followup word
                 foreach (Word s in words[word])
                 {
-                    // TODO: Finish me
+                    sum += s.Count;
                 }
 
                 // Step 2:  Update the probabilities
                 foreach (Word s in words[word])
                 {
-                    // TODO: Finish me
+                    s.Probability = s.Count / sum;
                 }
-
             }
         }
     }

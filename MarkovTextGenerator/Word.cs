@@ -12,7 +12,7 @@ namespace MarkovTextGenerator
         public int Count { get; set; } = 1;
         public double Probability { get; set; } = 0.0;
 
-        public Word (String word)
+        public Word(String word)
         {
             this.word = word;
         }
