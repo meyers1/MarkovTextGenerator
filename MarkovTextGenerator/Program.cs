@@ -29,8 +29,8 @@ namespace MarkovTextGenerator
             //    chain.AddString(line);  // Let the chain process this string
             //}
 
-            string input = File.ReadAllText(@"C:\Users\eahscs\Documents\GitHub\MarkovTextGenerator\Test.txt");
-            //string input = File.ReadAllText(@"C:\Users\eahscs\Documents\GitHub\MarkovTextGenerator\TrumpTweets.txt");
+            //string input = File.ReadAllText(@"C:\Users\eahscs\Documents\GitHub\MarkovTextGenerator\Test.txt");
+            string input = File.ReadAllText(@"C:\Users\eahscs\Documents\GitHub\MarkovTextGenerator\TrumpTweets.txt");
             //string input = File.ReadAllText(@"C:\Users\SUNNY\Documents\GitHub\MarkovTextGenerator\TrumpTweets.txt");
 
             string[] FormattedInput = Format.Tweets(input);
@@ -47,17 +47,21 @@ namespace MarkovTextGenerator
             //Console.WriteLine("Done learning!  Now give me a word and I'll tell you what comes next.");
             //Console.Write("> ");
             //String word = Console.ReadLine();
-
-            string word = chain.GetRandomStartingWord();
-
-            String nextWord = chain.GetNextWord(word);
-
-            Console.Write(word);
-
-            while (nextWord != "")
+            while(true)
             {
-                Console.Write(" " + nextWord);
-                nextWord = chain.GetNextWord(nextWord);
+                string word = chain.GetRandomStartingWord();
+
+                String nextWord = chain.GetNextWord(word);
+
+                Console.Write(word);
+
+                while (nextWord != "")
+                {
+                    Console.Write(" " + nextWord);
+                    nextWord = chain.GetNextWord(nextWord);
+                }
+                Console.ReadLine();
+                Console.WriteLine();
             }
         }
     }

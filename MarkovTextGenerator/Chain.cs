@@ -9,12 +9,14 @@ namespace MarkovTextGenerator
     class Chain
     {
         public Dictionary<String, List<Word>> words;
+        private Dictionary<String, int> sums;
         private Random rand;
 
         public Chain ()
         {
             words = new Dictionary<String, List<Word>>();
-            rand = new Random();
+            sums = new Dictionary<string, int>();
+            rand = new Random(Environment.TickCount);
         }
 
         // This may not be the best approach.. better may be to actually store
@@ -36,26 +38,17 @@ namespace MarkovTextGenerator
 
         public void AddString(String sentence)
         {
-            string[] words = sentence.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            string word1 = "", word2 = "";
-            for (int i = 0; i < words.Length - 1; i++)
-            {
-                word1 = words[i];
-                word2 = words[i + 1];
-                //if (words[i + 1] == null)
-                //{
-                //    word2 = "";
-                //}
-                //else
-                //{
-                //    word2 = words[i + 1];
-                //}
-                AddPair(word1, word2);
-            }
-            word1 = word2;
-            word2 = "";
             // TODO: Break sentence up into word pairs
             // TODO: Add each word pair to the chain
+            List<string> arr = sentence.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            arr.Add("");
+            string word1 = "", word2 = "";
+            for (int i = 0; i < arr.Count - 1; i++)
+            {
+                word1 = arr[i];
+                word2 = arr[i + 1];
+                AddPair(word1, word2);
+            }
         }
 
         // Adds a pair of words to the chain that will appear in order
@@ -63,24 +56,27 @@ namespace MarkovTextGenerator
         {
             if (!words.ContainsKey(word))
             {
+                sums.Add(word, 1);
                 words.Add(word, new List<Word>());
                 words[word].Add(new Word(word2));
             }
             else
             {
-                bool inDictionary = false;
-
+                bool found = false;
                 foreach (Word s in words[word])
                 {
                     if (s.ToString() == word2)
                     {
+                        found = true;
                         s.Count++;
-                        inDictionary = true;
+                        sums[word]++;
                     }
-                    if (!inDictionary)
-                    {
-                        words[word].Add(new Word(word2));
-                    }
+                }
+
+                if (!found)
+                {
+                    words[word].Add(new Word(word2));
+                    sums[word]++;
                 }
             }
         }
@@ -91,6 +87,7 @@ namespace MarkovTextGenerator
             if (words.ContainsKey(word))
             {
                 double choice = rand.NextDouble();
+
                 double num = 0;
                 foreach (Word s in words[word])
                 {
@@ -108,19 +105,14 @@ namespace MarkovTextGenerator
         {
             foreach (String word in words.Keys)
             {
-                double sum = 0;  // Total sum of all the occurences of each followup word
+                //double sum = 0;  // Total sum of all the occurences of each followup word
 
-                // Step 1:  Get the sum of all occurences of each followup word
+                // Update the probabilities
                 foreach (Word s in words[word])
                 {
-                    sum += s.Count;
+                    s.Probability = (double)s.Count / sums[word];
                 }
 
-                // Step 2:  Update the probabilities
-                foreach (Word s in words[word])
-                {
-                    s.Probability = s.Count / sum;
-                }
             }
         }
     }
