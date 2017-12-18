@@ -9,14 +9,14 @@ namespace MarkovTextGenerator
 {
     static class Format
     {
-        public static string[] Tweets(string input)
+        public static string[] Tweets(string[] input)
         {
 
-            List<string> content = input.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList();
+            List<string> content = input.ToList();
 
             for (int i = 0; i < content.Count(); i++)
             {
-                if (content[i].Length > 51)
+                if (content[i].Length > 30)
                 {
                     //delete unnecessary info
                     content[i] = content[i].Substring(24, content[i].Length - 30);

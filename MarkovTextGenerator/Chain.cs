@@ -23,7 +23,7 @@ namespace MarkovTextGenerator
         // a separate list of actual sentence starting words and randomly choose from that
         public String GetRandomStartingWord()
         {
-            return words.Keys.ElementAt(rand.Next() % words.Keys.Count);
+            return GetNextWord("++");
         }
 
         // Adds a sentence to the chain
@@ -43,11 +43,24 @@ namespace MarkovTextGenerator
             List<string> arr = sentence.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
             arr.Add("");
             string word1 = "", word2 = "";
+            AddPair("++", arr[0]);
+
             for (int i = 0; i < arr.Count - 1; i++)
             {
-                word1 = arr[i];
-                word2 = arr[i + 1];
-                AddPair(word1, word2);
+                AddPair(arr[i], arr[i + 1]);
+
+                if (i < arr.Count - 2)
+                {
+                    AddPair(arr[i] + " " + arr[i + 1], arr[i + 2]);
+                    AddPair(arr[i], arr[i + 1] + " " + arr[i + 2]);
+                }
+
+                if (i < arr.Count - 3)
+                {
+                    AddPair(arr[i] + " " + arr[i + 1], arr[i + 2] + " " + arr[i + 3]);
+                    AddPair(arr[i] + " " + arr[i + 1] + " " + arr[i + 2], arr[i + 3]);
+                    AddPair(arr[i], arr[i + 1] + " " + arr[i + 2] + " " + arr[i + 3]);
+                }
             }
         }
 

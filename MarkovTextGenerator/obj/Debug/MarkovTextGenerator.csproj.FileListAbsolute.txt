@@ -11,3 +11,4 @@ C:\Users\eahscs\Documents\GitHub\MarkovTextGenerator\MarkovTextGenerator\bin\Deb
 C:\Users\eahscs\Documents\GitHub\MarkovTextGenerator\MarkovTextGenerator\obj\Debug\MarkovTextGenerator.csprojResolveAssemblyReference.cache
 C:\Users\eahscs\Documents\GitHub\MarkovTextGenerator\MarkovTextGenerator\obj\Debug\MarkovTextGenerator.exe
 C:\Users\eahscs\Documents\GitHub\MarkovTextGenerator\MarkovTextGenerator\obj\Debug\MarkovTextGenerator.pdb
+C:\Users\eahscs\Documents\GitHub\MarkovTextGenerator\MarkovTextGenerator\bin\Debug\TrumpTweets.txt
